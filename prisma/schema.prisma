@@ -26,5 +26,6 @@ model Product{
   imageUrl       String
   price          Int
   inStock        Int
+  category       String
   soldTo         User[]
 }

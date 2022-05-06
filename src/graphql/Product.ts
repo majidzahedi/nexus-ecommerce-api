@@ -1,4 +1,4 @@
-import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
+import { extendType, intArg, objectType, stringArg } from "nexus";
 
 export const Product = objectType({
   name: "Product",
@@ -9,6 +9,7 @@ export const Product = objectType({
     t.nonNull.string("imageUrl");
     t.nonNull.int("price");
     t.nonNull.int("inStock");
+    t.nonNull.string("category");
     t.nonNull.int("sold", {
       async resolve(parent, __, context) {
         const users = await context.prisma.user.count({
@@ -25,30 +26,20 @@ export const productQuery = extendType({
   definition(t) {
     t.list.field("allProducts", {
       type: "Product",
-      async resolve(_, __, context) {
-        return await context.prisma.product.findMany();
-      },
-    });
-  },
-});
-
-export const productMutation = extendType({
-  type: "Mutation",
-  definition(t) {
-    t.nonNull.field("addProduct", {
-      type: "Product",
       args: {
-        name: nonNull(stringArg()),
-        description: nonNull(stringArg({ default: "No description" })),
-        imageUrl: nonNull(stringArg()),
-        price: nonNull(intArg()),
-        inStock: nonNull(intArg({ default: 1 })),
+        filter: stringArg(),
+        skip: intArg(),
+        take: intArg(),
       },
       async resolve(_, args, context) {
-        const product = context.prisma.product.create({
-          data: { ...args, sold: 0 },
+        const where: any = args.filter
+          ? { category: { contains: args.filter } }
+          : {};
+        return await context.prisma.product.findMany({
+          where,
+          skip: args.skip as number | undefined,
+          take: args.take as number | undefined,
         });
-        return product;
       },
     });
   },
