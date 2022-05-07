@@ -1,4 +1,4 @@
-import { extendType, intArg, objectType, stringArg } from "nexus";
+import { extendType, intArg, objectType, stringArg, list } from "nexus";
 
 export const Product = objectType({
   name: "Product",
@@ -40,6 +40,15 @@ export const productQuery = extendType({
           skip: args.skip as number | undefined,
           take: args.take as number | undefined,
         });
+      },
+    });
+    t.field("categories", {
+      type: list("String"),
+      async resolve(_, __, context) {
+        const uniqueByCategory = await context.prisma.product.groupBy({
+          by: ["category"],
+        });
+        return uniqueByCategory.map(({ category }) => category);
       },
     });
   },

@@ -1,6 +1,8 @@
 {
   "devDependencies": {
+    "@faker-js/faker": "^6.3.1",
     "@types/bcryptjs": "^2.4.2",
+    "@types/faker": "^6.6.9",
     "@types/jsonwebtoken": "^8.5.8",
     "prettier": "^2.6.2",
     "prisma": "^3.13.0",
