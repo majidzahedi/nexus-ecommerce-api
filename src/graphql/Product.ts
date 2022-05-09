@@ -1,12 +1,4 @@
-import {
-  extendType,
-  intArg,
-  objectType,
-  stringArg,
-  list,
-  nonNull,
-} from "nexus";
-import { faker } from "@faker-js/faker";
+import { extendType, intArg, objectType, stringArg, nonNull } from "nexus";
 
 export const Product = objectType({
   name: "Product",
@@ -59,15 +51,6 @@ export const productQuery = extendType({
         });
         return product;
       },
-    }),
-      t.field("categories", {
-        type: list("String"),
-        async resolve(_, __, context) {
-          const uniqueByCategory = await context.prisma.product.groupBy({
-            by: ["category"],
-          });
-          return uniqueByCategory.map(({ category }) => category);
-        },
-      });
+    });
   },
 });

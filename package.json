@@ -1,4 +1,7 @@
 {
+  "engin":{
+    "node":">=17.0.0"
+  },
   "devDependencies": {
     "@faker-js/faker": "^6.3.1",
     "@types/bcryptjs": "^2.4.2",
@@ -22,7 +25,7 @@
     "generate": "ts-node --transpile-only src/schema",
     "prettier-format": "prettier 'src/**/*.ts' --write",
     "migrate:deploy": "prisma migrate deploy",
-    "build": "prisma generate && npm run generate && tsc",
+    "build": "prisma generate && yarn run generate && tsc",
     "start": "node dist/src/index.js"
   }
 }
